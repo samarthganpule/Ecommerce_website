@@ -1,22 +1,36 @@
-const { Client } = require('pg');
+const mysql = require('mysql2/promise');
 const fs = require('fs');
 const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
 async function setupDatabase() {
     try {
-        // Connect to PostgreSQL database
-        const connection = new Client({
+        // Connect to MySQL server (without database)
+        let connection = await mysql.createConnection({
+            host: process.env.DB_HOST,
+            user: process.env.DB_USER,
+            password: process.env.DB_PASSWORD,
+            port: process.env.DB_PORT || 3306
+        });
+
+        console.log('Connected to MySQL server');
+
+        // Create database if it doesn't exist
+        await connection.execute(`CREATE DATABASE IF NOT EXISTS ${process.env.DB_NAME}`);
+        console.log(`Database ${process.env.DB_NAME} created or already exists`);
+
+        // Close connection and reconnect to the specific database
+        await connection.end();
+        
+        connection = await mysql.createConnection({
             host: process.env.DB_HOST,
             user: process.env.DB_USER,
             password: process.env.DB_PASSWORD,
             database: process.env.DB_NAME,
-            port: process.env.DB_PORT || 5432,
-            ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+            port: process.env.DB_PORT || 3306
         });
 
-        await connection.connect();
-        console.log('Connected to PostgreSQL database');
+        console.log(`Connected to database ${process.env.DB_NAME}`);
 
         // Read and execute schema
         const schema = fs.readFileSync('./database/schema.sql', 'utf8');
@@ -25,7 +39,7 @@ async function setupDatabase() {
         for (const statement of statements) {
             if (statement.trim()) {
                 try {
-                    await connection.query(statement);
+                    await connection.execute(statement);
                 } catch (err) {
                     // Skip if table already exists or other non-critical errors
                     if (!err.message.includes('already exists')) {
@@ -105,15 +119,15 @@ async function setupDatabase() {
         await connection.end();
         console.log('\n✅ Database setup completed successfully!');
         console.log('\nYou can now:');
-        console.log('1. Visit http://localhost:3000 for the store');
-        console.log('2. Visit http://localhost:3000/admin for admin panel');
+        console.log('1. Visit your website for the store');
+        console.log('2. Visit /admin for admin panel');
         console.log('3. Login as admin with: admin@example.com / password');
 
     } catch (error) {
         console.error('❌ Database setup failed:', error.message);
         console.log('\nPlease make sure:');
         console.log('1. MySQL is running');
-        console.log('2. Your .env file has correct database credentials');
+        console.log('2. Your environment variables are correct');
         console.log('3. The database user has CREATE privileges');
     }
 }
