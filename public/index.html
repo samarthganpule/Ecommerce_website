@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce Store</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>ShopEasy</h2>
+            </div>
+            <div class="nav-menu">
+                <input type="text" id="searchInput" placeholder="Search products..." class="search-input">
+                <button id="searchBtn" class="search-btn">Search</button>
+                <div class="nav-links">
+                    <a href="#" id="cartBtn" class="nav-link">Cart (<span id="cartCount">0</span>)</a>
+                    <a href="#" id="adminBtn" class="nav-link admin-only hidden">Admin Panel</a>
+                    <a href="#" id="loginBtn" class="nav-link">Login</a>
+                    <a href="#" id="registerBtn" class="nav-link">Register</a>
+                    <a href="#" id="logoutBtn" class="nav-link hidden">Logout</a>
+                    <span id="userWelcome" class="nav-link hidden"></span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Filters -->
+        <div class="filters">
+            <select id="categoryFilter">
+                <option value="">All Categories</option>
+            </select>
+            <input type="number" id="minPrice" placeholder="Min Price" class="price-input">
+            <input type="number" id="maxPrice" placeholder="Max Price" class="price-input">
+            <select id="sortBy">
+                <option value="created_at">Newest</option>
+                <option value="price">Price: Low to High</option>
+                <option value="price_desc">Price: High to Low</option>
+                <option value="rating">Rating</option>
+            </select>
+            <button id="applyFilters" class="filter-btn">Apply Filters</button>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="productsGrid" class="products-grid">
+            <!-- Products will be loaded here -->
+        </div>
+    </main>
+
+    <!-- Cart Drawer -->
+    <div id="cartDrawer" class="cart-drawer">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <button id="closeCart" class="close-btn">&times;</button>
+        </div>
+        <div id="cartItems" class="cart-items">
+            <!-- Cart items will be loaded here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                Total: ₹<span id="cartTotal">0.00</span>
+            </div>
+            <button id="checkoutBtn" class="checkout-btn">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#" id="showRegister">Register here</a></p>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Register</h2>
+            <form id="registerForm">
+                <input type="text" id="registerUsername" placeholder="Username" required>
+                <input type="email" id="registerEmail" placeholder="Email" required>
+                <input type="password" id="registerPassword" placeholder="Password" required>
+                <button type="submit">Register</button>
+            </form>
+            <p>Already have an account? <a href="#" id="showLogin">Login here</a></p>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Checkout</h2>
+            <form id="checkoutForm">
+                <textarea id="shippingAddress" placeholder="Shipping Address" required rows="4"></textarea>
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <div id="checkoutItems"></div>
+                    <div class="total">Total: ₹<span id="checkoutTotal">0.00</span></div>
+                </div>
+                <button type="submit">Place Order</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
