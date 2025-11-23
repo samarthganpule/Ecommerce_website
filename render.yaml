@@ -1,15 +1,16 @@
 services:
-  # Web Service (Node.js App)
+  # Web Service (Node.js Express App)
   - type: web
     name: ecommerce-app
+    runtime: node
     env: node
-    buildCommand: npm install
-    startCommand: npm start
+    buildCommand: npm install --production
+    startCommand: node server.js
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
-        value: 3000
+        value: 10000
       - key: DB_HOST
         fromDatabase:
           name: ecommerce-db

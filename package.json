@@ -9,6 +9,7 @@
   },
   "scripts": {
     "start": "node server.js",
+    "build": "echo 'No build step required for Express app'",
     "dev": "nodemon server.js",
     "setup-db": "node setup-database.js",
     "setup-products": "node setup-realistic-products.js",
